@@ -47,25 +47,88 @@ TURNRIGHT = {TURN}_[rR][iI][gG][hH][tT]
 %%
 
 <MAIN> {
-
-    \/\/      {
-                    yybegin(SHORT_COMMENT);
-              }
-    \/\*      {
-                    yybegin(LONG_COMMENT);
-              }
+    {PROGRAM}           {
+                            System.out.println("PROGRAM");
+                        }
+    {FUNCTION}          {
+                            System.out.println("FUNCTION");
+                        }
+    {IDENTIFIER}        {
+                            System.out.println("IDENTIFIER: " + yytext());
+                        }
+    {LBRA}              {
+                            System.out.println("LBRA");
+                        }
+    {RBRA}              {
+                            System.out.println("RBRA");
+                        }
+    {LPAR}              {
+                            System.out.println("LPAR");
+                        }
+    {RPAR}              {
+                            System.out.println("RPAR");
+                        }
+    {PENDOWN}           {
+                            System.out.println("PEN DOWN");
+                        }
+    {PENUP}             {
+                            System.out.println("PEN UP");
+                        }
+    {MOVE}              {
+                            System.out.println("MOVE");
+                        }
+    {MOVETO}            {
+                            System.out.println("MOVE TO");
+                        }
+    {SETCOLOR}          {
+                            System.out.println("SET COLOR");
+                        }
+    {INTEGER}           {
+                            System.out.println("INTEGER: " + yytext());
+                        }
+    {OPPLUS}            {
+                            System.out.println("PLUS");
+                        }
+    {OPMINUS}           {
+                            System.out.println("MINUS");
+                        }
+    {OPMUL}             {
+                            System.out.println("MUL");
+                        }
+    {OPDIV}             {
+                            System.out.println("DIV");
+                        }
+    {DOT}               {
+                            System.out.println("DOT");
+                        }
+    {TURNLEFT}          {
+                            System.out.println("TURN LEFT");
+                        }
+    {TURNRIGHT}         {
+                            System.out.println("TURN RIGHT");
+                        }
+    \/\/                {
+                            yybegin(SHORT_COMMENT);
+                        }
+    \/\*                {
+                            yybegin(LONG_COMMENT);
+                        }
+    {WHITESPACE}        // Go out with whitespaces.
+    <<EOF>>             {
+                            System.out.println("EOF");
+                        }
 }
 
 <SHORT_COMMENT> {
-    \n          {
-                    yybegin(MAIN);
-                }
-    .           // Go out with whitespaces.
+    \n                  {
+                            yybegin(MAIN);
+                        }
+    .                   // Go out with whitespaces.
 }
 
 <LONG_COMMENT> {
-    \*\/        {
-                    yybegin(MAIN);
-                }
-    .           // Go out with whitespaces.
+    \*\/                {
+                            yybegin(MAIN);
+                        }
+    .                   // Go out with whitespaces.
 }
