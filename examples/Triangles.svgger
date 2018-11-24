@@ -7,9 +7,9 @@ PROGRAM Triangles {
 FUNCTION DRAW_TRIANGLE(x, y) { // x, y represent basepoint for the triangle
   MOVE_TO(x, y+50).
   PEN_DOWN.
-  MOVE_TO(x+25, y).
-  MOVE_TO(x+50, y+50).
-  MOVE_TO(x, y+50).
+  GO_TO(x+25, y).
+  GO_TO(x+50, y+50).
+  GO_TO(x, y+50).
   PEN_UP.
-  MOVE_TO(x, y).
+  GO_TO(x, y).
 }

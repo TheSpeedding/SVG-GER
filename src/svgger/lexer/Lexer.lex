@@ -1,4 +1,4 @@
-package svgger;
+package svgger.lexer;
 
 import java.io.*;
 import java_cup.runtime.*;
@@ -23,7 +23,7 @@ TURN = [tT][uU][rR][nN]
 
 PROGRAM = [pP][rR][oO][gG][rR][aA][mM]
 FUNCTION = [fF][uU][nN][cC][tT][iI][oO][nN]
-IDENTIFIER = {LETTER}[{LETTER}|{DIGIT}]*
+IDENTIFIER = {LETTER}[a-zA-Z0-9]*
 LBRA = \{
 RBRA = \}
 LPAR = \(
@@ -31,11 +31,11 @@ RPAR = \)
 PENDOWN = [pP][eE][nN]_[dD][oO][wW][nN]
 PENUP = [pP][eE][nN]_[uU][pP]
 MOVE = [mM][oO][vV][eE]
-MOVETO = {MOVE}_[tT][oO]
+GOTO = [gG][oO]_[tT][oO]
 SETCOLOR = [sS][eE][tT]_[cC][oO][lL][oO][rR]
 INTEGER = [+-]?{DIGIT}+
-OPPLUS = +
-OPMINUS = -
+OPPLUS = \+
+OPMINUS = \-
 OPMUL = \*
 OPDIV = \/
 DOT = \.
@@ -52,9 +52,6 @@ TURNRIGHT = {TURN}_[rR][iI][gG][hH][tT]
                         }
     {FUNCTION}          {
                             System.out.println("FUNCTION");
-                        }
-    {IDENTIFIER}        {
-                            System.out.println("IDENTIFIER: " + yytext());
                         }
     {LBRA}              {
                             System.out.println("LBRA");
@@ -77,8 +74,8 @@ TURNRIGHT = {TURN}_[rR][iI][gG][hH][tT]
     {MOVE}              {
                             System.out.println("MOVE");
                         }
-    {MOVETO}            {
-                            System.out.println("MOVE TO");
+    {GOTO}              {
+                            System.out.println("GO TO");
                         }
     {SETCOLOR}          {
                             System.out.println("SET COLOR");
@@ -107,13 +104,21 @@ TURNRIGHT = {TURN}_[rR][iI][gG][hH][tT]
     {TURNRIGHT}         {
                             System.out.println("TURN RIGHT");
                         }
+    {REPEAT}            {
+                            System.out.println("REPEAT");
+                        }
+    {IDENTIFIER}        {
+                            System.out.println("IDENTIFIER: " + yytext());
+                        }
     \/\/                {
                             yybegin(SHORT_COMMENT);
                         }
     \/\*                {
                             yybegin(LONG_COMMENT);
                         }
-    {WHITESPACE}        // Go out with whitespaces.
+    {WHITESPACE}        {
+                            // Go out with whitespaces.
+                        }
     <<EOF>>             {
                             System.out.println("EOF");
                         }
@@ -123,12 +128,16 @@ TURNRIGHT = {TURN}_[rR][iI][gG][hH][tT]
     \n                  {
                             yybegin(MAIN);
                         }
-    .                   // Go out with whitespaces.
+    .                   {
+                            // Go out with whitespaces.
+                        }
 }
 
 <LONG_COMMENT> {
     \*\/                {
                             yybegin(MAIN);
                         }
-    .                   // Go out with whitespaces.
+    .                   {
+                            // Go out with whitespaces.
+                        }
 }
