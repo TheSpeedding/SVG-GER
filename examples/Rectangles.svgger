@@ -1,0 +1,17 @@
+PROGRAM Rectangles {
+  REPEAT 5 {
+    DRAW_RECTANGLE(50).
+    MOVE(75).
+  }  
+}
+FUNCTION DRAW_RECTANGLE(x) {
+  PEN_DOWN.
+  REPEAT 4 {
+    DRAW_LINE_AND_TURN_RIGHT(x).
+  }
+  PEN_UP.
+} 
+FUNCTION DRAW_LINE_AND_TURN_RIGHT(x) {
+  MOVE(x).
+  TURN_RIGHT.
+}
