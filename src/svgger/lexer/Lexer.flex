@@ -2,13 +2,27 @@ package svgger.lexer;
 
 import java.io.*;
 import java_cup.runtime.*;
+
 %%
 
 %class Lexer
+%cup
+
 %final
-%standalone
-%apiprivate
+%public
+
 %line
+%column
+
+%{
+    private Symbol createSymbol(int type) {
+        return new Symbol(type, yyline, yycolumn);
+    }
+
+    private Symbol createSymbol(int type, Object value) {
+        return new Symbol(type, yyline, yycolumn, value);
+    }
+%}
 
 %init{
     yybegin(MAIN);
@@ -23,7 +37,7 @@ TURN = [tT][uU][rR][nN]
 
 PROGRAM = [pP][rR][oO][gG][rR][aA][mM]
 FUNCTION = [fF][uU][nN][cC][tT][iI][oO][nN]
-IDENTIFIER = {LETTER}[a-zA-Z0-9]*
+IDENTIFIER = {LETTER}[a-zA-Z0-9_]*
 LBRA = \{
 RBRA = \}
 LPAR = \(
@@ -33,7 +47,7 @@ PENUP = [pP][eE][nN]_[uU][pP]
 MOVE = [mM][oO][vV][eE]
 GOTO = [gG][oO]_[tT][oO]
 SETCOLOR = [sS][eE][tT]_[cC][oO][lL][oO][rR]
-INTEGER = [+-]?{DIGIT}+
+NUMBER = [+-]?{DIGIT}+
 OPPLUS = \+
 OPMINUS = \-
 OPMUL = \*
@@ -42,73 +56,82 @@ DOT = \.
 REPEAT = [rR][eE][pP][eE][aA][tT]
 TURNLEFT = {TURN}_[lL][eE][fF][tT]
 TURNRIGHT = {TURN}_[rR][iI][gG][hH][tT]
-
+RETURNZERO = [rR][eE][tT][uU][rR][nN]_[iI][fF]_[zZ][eE][rR][oO]
 
 %%
 
 <MAIN> {
+
+    /** Keywords. **/
+
     {PROGRAM}           {
-                            System.out.println("PROGRAM");
+                            return createSymbol(sym.PROGRAM);
                         }
     {FUNCTION}          {
-                            System.out.println("FUNCTION");
+                            return createSymbol(sym.FUNCTION);
                         }
     {LBRA}              {
-                            System.out.println("LBRA");
+                            return createSymbol(sym.LBRA);
                         }
     {RBRA}              {
-                            System.out.println("RBRA");
+                            return createSymbol(sym.RBRA);
                         }
     {LPAR}              {
-                            System.out.println("LPAR");
+                            return createSymbol(sym.LPAR);
                         }
     {RPAR}              {
-                            System.out.println("RPAR");
+                            return createSymbol(sym.RPAR);
                         }
     {PENDOWN}           {
-                            System.out.println("PEN DOWN");
+                            return createSymbol(sym.PENDOWN);
                         }
     {PENUP}             {
-                            System.out.println("PEN UP");
+                            return createSymbol(sym.PENUP);
                         }
     {MOVE}              {
-                            System.out.println("MOVE");
+                            return createSymbol(sym.MOVE);
                         }
     {GOTO}              {
-                            System.out.println("GO TO");
+                            return createSymbol(sym.GOTO);
                         }
     {SETCOLOR}          {
-                            System.out.println("SET COLOR");
-                        }
-    {INTEGER}           {
-                            System.out.println("INTEGER: " + yytext());
+                            return createSymbol(sym.SETCOLOR);
                         }
     {OPPLUS}            {
-                            System.out.println("PLUS");
+                            return createSymbol(sym.OPPLUS);
                         }
     {OPMINUS}           {
-                            System.out.println("MINUS");
+                            return createSymbol(sym.OPMINUS);
                         }
     {OPMUL}             {
-                            System.out.println("MUL");
+                            return createSymbol(sym.OPMUL);
                         }
     {OPDIV}             {
-                            System.out.println("DIV");
+                            return createSymbol(sym.OPDIV);
                         }
     {DOT}               {
-                            System.out.println("DOT");
+                            return createSymbol(sym.DOT);
                         }
     {TURNLEFT}          {
-                            System.out.println("TURN LEFT");
+                            return createSymbol(sym.TURNLEFT);
                         }
     {TURNRIGHT}         {
-                            System.out.println("TURN RIGHT");
+                            return createSymbol(sym.TURNRIGHT);
+                        }
+    {RETURNZERO}        {
+                            return createSymbol(sym.RETURNZERO);
                         }
     {REPEAT}            {
-                            System.out.println("REPEAT");
+                            return createSymbol(sym.REPEAT);
+                        }
+
+    /** Other tokens. **/
+
+    {NUMBER}            {
+                            return createSymbol(sym.NUMBER, new Integer(yytext()));
                         }
     {IDENTIFIER}        {
-                            System.out.println("IDENTIFIER: " + yytext());
+                            return createSymbol(sym.IDENTIFIER, new String(yytext()));
                         }
     \/\/                {
                             yybegin(SHORT_COMMENT);
@@ -120,7 +143,7 @@ TURNRIGHT = {TURN}_[rR][iI][gG][hH][tT]
                             // Go out with whitespaces.
                         }
     <<EOF>>             {
-                            System.out.println("EOF");
+                            return createSymbol(sym.EOF);
                         }
 }
 
@@ -131,6 +154,9 @@ TURNRIGHT = {TURN}_[rR][iI][gG][hH][tT]
     .                   {
                             // Go out with whitespaces.
                         }
+    <<EOF>>             {
+                            return createSymbol(sym.EOF);
+                        }
 }
 
 <LONG_COMMENT> {
@@ -139,5 +165,8 @@ TURNRIGHT = {TURN}_[rR][iI][gG][hH][tT]
                         }
     .                   {
                             // Go out with whitespaces.
+                        }
+    <<EOF>>             {
+                            return createSymbol(sym.EOF);
                         }
 }

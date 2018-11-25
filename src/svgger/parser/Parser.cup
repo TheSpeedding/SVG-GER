@@ -1,0 +1,63 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+import svgger.commends.*;
+
+parser code {:
+    public void report_error(String message, Object info) {
+        StringBuilder sb = new StringBuilder("Error: \"" + message);
+        if (info instanceof Symbol) {
+            Symbol s = ((Symbol)info);
+            if (s.left >= 0) {
+                sb.append(" at line " + (s.left + 1));
+            }
+        }
+        System.err.println(sb);
+    }
+
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        System.exit(1);
+    }
+:};
+
+/** Terminals. **/
+
+terminal            PROGRAM;
+terminal            FUNCTION;
+terminal            LBRA;
+terminal            RBRA;
+terminal            LPAR;
+terminal            RPAR;
+terminal            PENDOWN;
+terminal            PENUP;
+terminal            MOVE;
+terminal            GOTO;
+terminal            SETCOLOR;
+terminal            OPPLUS;
+terminal            OPMINUS;
+terminal            OPMUL;
+terminal            OPDIV;
+terminal            DOT;
+terminal            REPEAT;
+terminal            TURNLEFT;
+terminal            TURNRIGHT;
+terminal            RETURNZERO;
+terminal Integer    NUMBER;
+terminal String     IDENTIFIER;
+
+
+/** Non-terminals. **/
+
+nonterminal Interpreter         program;
+
+/** Precedence. **/
+
+precedence left OPPLUS, OPMINUS;
+precedence left OPMUL, OPDIV;
+
+/** Start non-terminal. **/
+
+start with program;
+
+/** Rules. **/

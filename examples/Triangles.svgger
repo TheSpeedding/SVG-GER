@@ -5,7 +5,7 @@ PROGRAM Triangles {
   DRAW_TRIANGLE(100, 0).
 }
 FUNCTION DRAW_TRIANGLE(x, y) { // x, y represent basepoint for the triangle
-  MOVE_TO(x, y+50).
+  GO_TO(x, y+50).
   PEN_DOWN.
   GO_TO(x+25, y).
   GO_TO(x+50, y+50).
