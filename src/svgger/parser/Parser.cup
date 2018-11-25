@@ -1,7 +1,7 @@
 import java_cup.runtime.*;
 import java.util.*;
 import java.io.*;
-import svgger.commends.*;
+import svgger.commands.*;
 
 parser code {:
     public void report_error(String message, Object info) {
@@ -50,6 +50,8 @@ terminal String     IDENTIFIER;
 /** Non-terminals. **/
 
 nonterminal Interpreter         program;
+nonterminal Operator            operator;
+nonterminal Expression          expression;
 
 /** Precedence. **/
 
@@ -61,3 +63,12 @@ precedence left OPMUL, OPDIV;
 start with program;
 
 /** Rules. **/
+
+operator ::= OPPLUS         {: RESULT = new OperatorPlus(); :}
+           | OPMINUS        {: RESULT = new OperatorMinus(); :}
+           | OPMUL          {: RESULT = new OperatorMul(); :}
+           | OPDIV          {: RESULT = new OperatorDiv(); :}
+           ;
+
+expression ::= NUMBER:n     {: RESULT = new NumberConstant(n.intValue()); :}
+             | IDENTIFIER:i {: RESULT = new Variable(i
