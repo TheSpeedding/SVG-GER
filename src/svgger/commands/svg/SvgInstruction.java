@@ -1,7 +1,7 @@
 package svgger.commands.svg;
 
 /** Instruction for the SVG language. */
-public abstract class Instruction {
+public abstract class SvgInstruction {
     /** Returns instruction SVG code. */
     public abstract String getSvgInstruction();
 
