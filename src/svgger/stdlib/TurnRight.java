@@ -1,6 +1,9 @@
-package svgger.commands;
+package svgger.stdlib;
 
-public class TurnRight extends Command {
+import svgger.commands.Interpreter;
+import svgger.commands.statements.Statement;
+
+public class TurnRight extends Statement {
     /** Turns the pen right. */
     @Override
     public void run(Interpreter interpreter) {

@@ -29,20 +29,12 @@ terminal            LBRA;
 terminal            RBRA;
 terminal            LPAR;
 terminal            RPAR;
-terminal            PENDOWN;
-terminal            PENUP;
-terminal            MOVE;
-terminal            GOTO;
-terminal            SETCOLOR;
 terminal            OPPLUS;
 terminal            OPMINUS;
 terminal            OPMUL;
 terminal            OPDIV;
 terminal            DOT;
 terminal            REPEAT;
-terminal            TURNLEFT;
-terminal            TURNRIGHT;
-terminal            RETURNZERO;
 terminal Integer    NUMBER;
 terminal String     IDENTIFIER;
 
@@ -52,6 +44,14 @@ terminal String     IDENTIFIER;
 nonterminal Interpreter         program;
 nonterminal Operator            operator;
 nonterminal Expression          expression;
+
+nonterminal Statement           statement;
+nonterminal Statement           goto;
+nonterminal Statement           move;
+nonterminal Statement           repeat;
+nonterminal Statement           block;
+nonterminal Statement           setColor;
+nonterminal Statement           returnZero;
 
 /** Precedence. **/
 
@@ -64,11 +64,21 @@ start with program;
 
 /** Rules. **/
 
+program ::= PROGRAM IDENTIFIER:i functionLoop;
+
 operator ::= OPPLUS         {: RESULT = new OperatorPlus(); :}
            | OPMINUS        {: RESULT = new OperatorMinus(); :}
            | OPMUL          {: RESULT = new OperatorMul(); :}
            | OPDIV          {: RESULT = new OperatorDiv(); :}
            ;
 
-expression ::= NUMBER:n     {: RESULT = new NumberConstant(n.intValue()); :}
-             | IDENTIFIER:i {: RESULT = new Variable(i
+expression ::= NUMBER:n                                 {: RESULT = new NumberConstant(n.intValue()); :}
+             | IDENTIFIER:i                             {: RESULT = new VariableIdentifier(i); :}
+             | expression:e1 operator:o expression:e2   {: RESULT = new ComplexExpression(e1, o, e2); :}
+             ;
+
+statement ::= PENUP             {: RESULT = new PenUp(); :}
+            | PENDOWN           {: RESULT = new PenDown(); :}
+            | TURNLEFT          {: RESULT = new TurnLeft(); :}
+            | TURNRIGHT         {: RESULT = new TurnRight(); :}
+            |

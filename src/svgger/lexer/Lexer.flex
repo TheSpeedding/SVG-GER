@@ -42,11 +42,6 @@ LBRA = \{
 RBRA = \}
 LPAR = \(
 RPAR = \)
-PENDOWN = [pP][eE][nN]_[dD][oO][wW][nN]
-PENUP = [pP][eE][nN]_[uU][pP]
-MOVE = [mM][oO][vV][eE]
-GOTO = [gG][oO]_[tT][oO]
-SETCOLOR = [sS][eE][tT]_[cC][oO][lL][oO][rR]
 NUMBER = {DIGIT}+
 OPPLUS = \+
 OPMINUS = \-
@@ -54,9 +49,6 @@ OPMUL = \*
 OPDIV = \/
 DOT = \.
 REPEAT = [rR][eE][pP][eE][aA][tT]
-TURNLEFT = {TURN}_[lL][eE][fF][tT]
-TURNRIGHT = {TURN}_[rR][iI][gG][hH][tT]
-RETURNZERO = [rR][eE][tT][uU][rR][nN]_[iI][fF]_[zZ][eE][rR][oO]
 
 %%
 
@@ -82,21 +74,6 @@ RETURNZERO = [rR][eE][tT][uU][rR][nN]_[iI][fF]_[zZ][eE][rR][oO]
     {RPAR}              {
                             return createSymbol(sym.RPAR);
                         }
-    {PENDOWN}           {
-                            return createSymbol(sym.PENDOWN);
-                        }
-    {PENUP}             {
-                            return createSymbol(sym.PENUP);
-                        }
-    {MOVE}              {
-                            return createSymbol(sym.MOVE);
-                        }
-    {GOTO}              {
-                            return createSymbol(sym.GOTO);
-                        }
-    {SETCOLOR}          {
-                            return createSymbol(sym.SETCOLOR);
-                        }
     {OPPLUS}            {
                             return createSymbol(sym.OPPLUS);
                         }
@@ -111,15 +88,6 @@ RETURNZERO = [rR][eE][tT][uU][rR][nN]_[iI][fF]_[zZ][eE][rR][oO]
                         }
     {DOT}               {
                             return createSymbol(sym.DOT);
-                        }
-    {TURNLEFT}          {
-                            return createSymbol(sym.TURNLEFT);
-                        }
-    {TURNRIGHT}         {
-                            return createSymbol(sym.TURNRIGHT);
-                        }
-    {RETURNZERO}        {
-                            return createSymbol(sym.RETURNZERO);
                         }
     {REPEAT}            {
                             return createSymbol(sym.REPEAT);
