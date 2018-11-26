@@ -9,5 +9,9 @@ public class StandardLibrary {
         interpreter.addFunction(new PenUp());
         interpreter.addFunction(new TurnLeft());
         interpreter.addFunction(new TurnRight());
+        interpreter.addFunction(new GoTo());
+        interpreter.addFunction(new Move());
+        interpreter.addFunction(new SetColor());
+        interpreter.addFunction(new SetWidth());
     }
 }

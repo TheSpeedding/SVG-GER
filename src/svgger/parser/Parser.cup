@@ -41,17 +41,13 @@ terminal String     IDENTIFIER;
 
 /** Non-terminals. **/
 
-nonterminal Interpreter         program;
-nonterminal Operator            operator;
-nonterminal Expression          expression;
+nonterminal Interpreter             program;
+nonterminal Operator                operator;
+nonterminal Expression              expression;
+nonterminal Statement               statement;
 
-nonterminal Statement           statement;
-nonterminal Statement           goto;
-nonterminal Statement           move;
-nonterminal Statement           repeat;
-nonterminal Statement           block;
-nonterminal Statement           setColor;
-nonterminal Statement           returnZero;
+nonterminal SvggerList<Statement>   statementLoop;
+nonterminal SvggerList<Expression>  fnCallParametersLoop;
 
 /** Precedence. **/
 
@@ -77,8 +73,16 @@ expression ::= NUMBER:n                                 {: RESULT = new NumberCo
              | expression:e1 operator:o expression:e2   {: RESULT = new ComplexExpression(e1, o, e2); :}
              ;
 
-statement ::= PENUP             {: RESULT = new PenUp(); :}
-            | PENDOWN           {: RESULT = new PenDown(); :}
-            | TURNLEFT          {: RESULT = new TurnLeft(); :}
-            | TURNRIGHT         {: RESULT = new TurnRight(); :}
-            |
+statement ::= REPEAT expression:e statement:s                   {:  :}
+            | LBRA statementLoop:a RBRA                         {:  :} // Block of code.
+            | IDENTIFIER:i DOT                                  {:  :} // Function call with no parameters.
+            | IDENTIFIER:i LPAR fnCallParametersLoop:a RPAR DOT {:  :} // Function call with some parameters.
+            ;
+
+statementLoop ::= statement:s                   {: RESULT = new SvggerList<Statement>(s); :}
+                | statementLoop:a statement:s   {: RESULT = new SvggerList<Statement>(a, s); :}
+                ;
+
+fnCallParametersLoop ::= expression:e                          {: RESULT = new SvggerList<Expression>(e); :}
+                       | fnCallParametersLoop:a expression:e   {: RESULT = new SvggerList<Expression>(a, e); :}
+                       ;

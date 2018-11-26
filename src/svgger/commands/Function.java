@@ -23,6 +23,11 @@ public class Function {
         this.parameterKeys = new SvggerList<>();
     }
 
+    /** Returns parameter keys for the function. */
+    public SvggerList<VariableIdentifier> getParameterKeys() {
+        return parameterKeys;
+    }
+
     /** Adds a new command to the function. */
     public void addCommand(Statement command) {
         commands.add(command);

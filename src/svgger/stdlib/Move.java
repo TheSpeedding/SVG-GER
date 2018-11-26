@@ -10,14 +10,15 @@ import svgger.util.SvggerList;
 import java.awt.*;
 import java.util.HashMap;
 
-/** Standard function that sets the pen down. */
+/** Standard function that moves the pen relatively. */
 public class Move extends Function {
     private class HelperStatement extends Statement {
         @Override
         public void run(Interpreter interpreter, HashMap<VariableIdentifier, Integer> varTable) {
             var currentDirection = interpreter.getCurrentDirection();
             var originLocation = interpreter.getCurrentLocation();
-            var distance = varTable.get(new VariableIdentifier("x"));
+
+            var distance = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
 
             switch (currentDirection) {
                 case UP:
