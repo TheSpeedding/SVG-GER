@@ -48,6 +48,9 @@ public class Main {
             } catch (Exception e) {
                 System.err.println("Error: " + e.getMessage());
             }
+            catch (StackOverflowError e) {
+                System.err.println("Error: Stack overflow. Check for stop condition in your recursive function.");
+            }
 
         }
     }

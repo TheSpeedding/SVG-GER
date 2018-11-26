@@ -11,7 +11,7 @@ public class SvgLine extends SvgInstruction {
     public SvgLine(Point originLocation, Point currentLocation, SvgStyle style) {
         this.originLocation = originLocation;
         this.currentLocation = currentLocation;
-        this.style = style;
+        this.style = new SvgStyle(style); // Deep copy is required since the color can be changed throughout the program and it would lead to the same color for all the lines, because commands are executed when parsing is done.
     }
 
     @Override

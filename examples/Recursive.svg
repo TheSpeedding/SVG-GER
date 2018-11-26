@@ -250,4 +250,5 @@
 <line x1="372" y1="381" x2="372" y2="372" style="stroke: rgb(0,0,0); stroke-width: 1" />
 <line x1="372" y1="372" x2="378" y2="372" style="stroke: rgb(0,0,0); stroke-width: 1" />
 <line x1="378" y1="372" x2="378" y2="375" style="stroke: rgb(0,0,0); stroke-width: 1" />
+<line x1="378" y1="375" x2="0" y2="0" style="stroke: rgb(0,0,0); stroke-width: 1" />
 </svg>

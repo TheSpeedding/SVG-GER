@@ -1,7 +1,7 @@
 # SVG-GER
 
 SVG-GER is a simple programming language that is meant to creating SVG pictures consisting of lines only. The language is considered to be slightly functional, because no assignment operator is supported at the moment. Files with the source code usually have extension `*.svgger`. In the compilation process, arguments with path to source code, width of the canvas and height of the canvas are passed to the Java program. The program starts at the point (0,0) in the direction to the East and with pen put up. The language support following basic commands:
-  - `PEN_UP` sets the pen up so it draws nothing nomore
+  - `PEN_UP` sets the pen up so it draws nothing anymore
   - `PEN_DOWN` sets the pen down so it starts drawing
   - `TURN_LEFT` turns the direction to the right, e.g. from the West to the North
   - `TURN_RIGHT` turns the direction to the left, e.g. from the West to the South
@@ -9,7 +9,8 @@ SVG-GER is a simple programming language that is meant to creating SVG pictures 
   - `GO_TO(x, y)` absolute move of the pen to the given coordinates (x,y) without changing a direction
   - `REPEAT n` repeats the following statement n-times, typically a block of the code
   - `SET_COLOR(r,g,b)` sets the color of the lines to the RGB color given by parameters
-  - `SET_WIDTH(n)` sets the width of the lines
+  - `SET_RANDOM_COLOR` sets the random color of the lines
+  - `SET_WIDTH(n)` sets the width of the lines to n pixels
 
 However you can define your own functions with any parameters you want. But consider that they all are of `void` type only, i.e. they have no return value. You can also define a recursive function to draw some interesting figures. You may have noticed, that there is no `IF` statement or boolean expressions in the language. Therefore, a command `RETURN_IF_ZERO(x)` was implemented, which returns from the function at the point of calling if the parameter x is equal to zero. So you may need some special parameter in your function demarked as a counter, which decrements in each recursive call of the function.
 

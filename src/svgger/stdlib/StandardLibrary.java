@@ -14,5 +14,6 @@ public class StandardLibrary {
         program.addFunction(new SetColor());
         program.addFunction(new SetWidth());
         program.addFunction(new ReturnIfZero());
+        program.addFunction(new SetRandomColor());
     }
 }

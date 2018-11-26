@@ -1,0 +1,40 @@
+Program Chaotic {
+  GO_TO(400, 300).
+  PEN_DOWN.  
+  DRAW_RECURSIVE(7, 60).
+}
+FUNCTION DRAW_RECURSIVE(n, length) {
+  SET_RANDOM_COLOR.
+  TURN_LEFT.
+  MOVE(length).
+  SET_RANDOM_COLOR.    
+  RETURN_IF_ZERO(n).
+  DRAW_RECURSIVE(n-1, length/2). 
+  TURN_LEFT.
+  MOVE(length*2). 
+  SET_RANDOM_COLOR.
+  DRAW_RECURSIVE(n-1, length/3).  
+  TURN_RIGHT.  
+  MOVE(length*5).  
+  DRAW_RECURSIVE_ANOTHER(n, length, 3*length/2).
+  TURN_LEFT.
+  MOVE(20). 
+  SET_RANDOM_COLOR.
+  TURN_LEFT.
+  MOVE(30).
+  TURN_LEFT.   
+  DRAW_RECURSIVE_ANOTHER(n, length, length/2).
+}
+FUNCTION DRAW_RECURSIVE_ANOTHER(n, length1, length2) {
+  TURN_LEFT.
+  MOVE(length1).
+  TURN_LEFT.      
+  SET_RANDOM_COLOR.
+  RETURN_IF_ZERO(n).
+  MOVE(length2).
+  DRAW_RECURSIVE_ANOTHER(n-1, length1/2, length2/2).
+  TURN_LEFT.    
+  SET_RANDOM_COLOR.
+  DRAW_RECURSIVE_ANOTHER(n-1, length1, length2).
+  MOVE(length1+length2).
+}

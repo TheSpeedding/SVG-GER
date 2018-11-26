@@ -18,7 +18,7 @@ public class Block extends Statement {
     public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
         for (Statement s : statements) {
             if (!s.run(program, varTable))
-                return false;
+                break;
         }
         return true;
     }
