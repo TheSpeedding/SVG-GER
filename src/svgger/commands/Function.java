@@ -23,6 +23,11 @@ public class Function {
         this.parameterKeys = new SvggerList<>();
     }
 
+    /** Returns name of the function. */
+    public String getName() {
+        return name;
+    }
+
     /** Returns parameter keys for the function. */
     public SvggerList<VariableIdentifier> getParameterKeys() {
         return parameterKeys;
@@ -33,13 +38,13 @@ public class Function {
         commands.add(command);
     }
 
-    public void run(Interpreter interpreter, SvggerList<Integer> parameterValues) {
+    public void run(Interpreter interpreter, SvggerList<Expression> parameterValues, HashMap<VariableIdentifier, Integer> previousContext) {
         if (parameterValues.size() != parameterKeys.size())
             throw new InvalidParameterException("Number of parameters at the function call " + name + " does not match.");
 
         HashMap<VariableIdentifier, Integer> varTable = new HashMap<>();
         for (int i = 0; i < parameterKeys.size(); ++i) {
-            varTable.put(parameterKeys.get(i), parameterValues.get(i));
+            varTable.put(parameterKeys.get(i), parameterValues.get(i).getValue(previousContext));
         }
     }
 }

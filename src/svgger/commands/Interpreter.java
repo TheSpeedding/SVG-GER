@@ -114,6 +114,16 @@ public class Interpreter {
         functions.add(fn);
     }
 
+    /** Returns the function by name. */
+    public Function getFunction(String name) {
+        for (Function f : functions) {
+            if (f.getName().equals(name)) {
+                return f;
+            }
+        }
+        return null;
+    }
+
     /** Adds SVG instruction to the program. */
     public void addSvgInstruction(SvgInstruction svg) {
         svgInstructions.add(svg);

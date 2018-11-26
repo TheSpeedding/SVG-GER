@@ -46,7 +46,7 @@ nonterminal Operator                operator;
 nonterminal Expression              expression;
 nonterminal Statement               statement;
 
-nonterminal SvggerList<Statement>   statementLoop;
+nonterminal SvggerList<Statement>   statementsLoop;
 nonterminal SvggerList<Expression>  fnCallParametersLoop;
 
 /** Precedence. **/
@@ -73,15 +73,15 @@ expression ::= NUMBER:n                                 {: RESULT = new NumberCo
              | expression:e1 operator:o expression:e2   {: RESULT = new ComplexExpression(e1, o, e2); :}
              ;
 
-statement ::= REPEAT expression:e statement:s                   {:  :}
-            | LBRA statementLoop:a RBRA                         {:  :} // Block of code.
+statement ::= REPEAT expression:e statement:s                   {: RESULT = new Repeat(e, s); :}
+            | LBRA statementsLoop:a RBRA                        {: RESULT = new Block(a); :} // Block of code.
             | IDENTIFIER:i DOT                                  {:  :} // Function call with no parameters.
             | IDENTIFIER:i LPAR fnCallParametersLoop:a RPAR DOT {:  :} // Function call with some parameters.
             ;
 
-statementLoop ::= statement:s                   {: RESULT = new SvggerList<Statement>(s); :}
-                | statementLoop:a statement:s   {: RESULT = new SvggerList<Statement>(a, s); :}
-                ;
+statementsLoop ::= statement:s                    {: RESULT = new SvggerList<Statement>(s); :}
+                 | statementsLoop:a statement:s   {: RESULT = new SvggerList<Statement>(a, s); :}
+                 ;
 
 fnCallParametersLoop ::= expression:e                          {: RESULT = new SvggerList<Expression>(e); :}
                        | fnCallParametersLoop:a expression:e   {: RESULT = new SvggerList<Expression>(a, e); :}
