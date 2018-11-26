@@ -1,7 +1,7 @@
 package svgger.commands.statements;
 
 
-import svgger.commands.Interpreter;
+import svgger.commands.Program;
 import svgger.commands.expressions.Expression;
 import svgger.commands.expressions.VariableIdentifier;
 
@@ -18,10 +18,10 @@ public class Repeat extends Statement {
     }
 
     @Override
-    public void run(Interpreter interpreter, HashMap<VariableIdentifier, Integer> varTable) {
+    public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
         int val = expr.getValue(varTable);
         for (int i = 0; i < val; ++i) {
-            statement.run(interpreter, varTable);
+            statement.run(program, varTable);
         }
     }
 }

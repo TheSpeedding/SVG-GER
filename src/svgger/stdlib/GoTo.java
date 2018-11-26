@@ -1,7 +1,7 @@
 package svgger.stdlib;
 
 import svgger.commands.Function;
-import svgger.commands.Interpreter;
+import svgger.commands.Program;
 import svgger.commands.expressions.VariableIdentifier;
 import svgger.commands.statements.Statement;
 import svgger.commands.svg.SvgLine;
@@ -14,19 +14,19 @@ import java.util.HashMap;
 public class GoTo extends Function {
     private class HelperStatement extends Statement {
         @Override
-        public void run(Interpreter interpreter, HashMap<VariableIdentifier, Integer> varTable) {
-            var currentDirection = interpreter.getCurrentDirection();
-            var originLocation = interpreter.getCurrentLocation();
+        public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+            var currentDirection = program.getCurrentDirection();
+            var originLocation = program.getCurrentLocation();
 
             var x = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
             var y = getParameterKeys().get(1).getValue(varTable); // This variable is given by the variable in the constructor below.
 
-            interpreter.setLocation(new Point(x, y));
+            program.setLocation(new Point(x, y));
 
-            var currentLocation = interpreter.getCurrentLocation();
+            var currentLocation = program.getCurrentLocation();
 
-            if (interpreter.isPenDown()) {
-                interpreter.addSvgInstruction(new SvgLine(originLocation, currentLocation, interpreter.getStyle()));
+            if (program.isPenDown()) {
+                program.addSvgInstruction(new SvgLine(originLocation, currentLocation, program.getStyle()));
             }
         }
     }

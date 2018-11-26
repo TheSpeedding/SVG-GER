@@ -2,6 +2,7 @@ package svgger.lexer;
 
 import java.io.*;
 import java_cup.runtime.*;
+import svgger.parser.*;
 
 %%
 
@@ -33,7 +34,6 @@ import java_cup.runtime.*;
 DIGIT = [0-9]
 LETTER = [a-zA-Z]
 WHITESPACE = [ \t\r\n]
-TURN = [tT][uU][rR][nN]
 
 PROGRAM = [pP][rR][oO][gG][rR][aA][mM]
 FUNCTION = [fF][uU][nN][cC][tT][iI][oO][nN]
@@ -48,6 +48,7 @@ OPMINUS = \-
 OPMUL = \*
 OPDIV = \/
 DOT = \.
+COMMA = ,
 REPEAT = [rR][eE][pP][eE][aA][tT]
 
 %%
@@ -88,6 +89,9 @@ REPEAT = [rR][eE][pP][eE][aA][tT]
                         }
     {DOT}               {
                             return createSymbol(sym.DOT);
+                        }
+    {COMMA}             {
+                            return createSymbol(sym.COMMA);
                         }
     {REPEAT}            {
                             return createSymbol(sym.REPEAT);

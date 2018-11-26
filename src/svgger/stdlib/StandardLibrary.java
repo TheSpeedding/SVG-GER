@@ -1,17 +1,17 @@
 package svgger.stdlib;
 
-import svgger.commands.Interpreter;
+import svgger.commands.Program;
 
 /** Class representing standard library. */
 public class StandardLibrary {
-    public static void include(Interpreter interpreter) {
-        interpreter.addFunction(new PenDown());
-        interpreter.addFunction(new PenUp());
-        interpreter.addFunction(new TurnLeft());
-        interpreter.addFunction(new TurnRight());
-        interpreter.addFunction(new GoTo());
-        interpreter.addFunction(new Move());
-        interpreter.addFunction(new SetColor());
-        interpreter.addFunction(new SetWidth());
+    public static void include(Program program) {
+        program.addFunction(new PenDown());
+        program.addFunction(new PenUp());
+        program.addFunction(new TurnLeft());
+        program.addFunction(new TurnRight());
+        program.addFunction(new GoTo());
+        program.addFunction(new Move());
+        program.addFunction(new SetColor());
+        program.addFunction(new SetWidth());
     }
 }

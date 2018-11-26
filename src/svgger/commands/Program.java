@@ -8,22 +8,28 @@ import svgger.stdlib.StandardLibrary;
 import svgger.util.SvggerList;
 
 import java.awt.*;
-import java.io.*;
+import java.io.PrintStream;
+import java.security.InvalidParameterException;
 import java.util.*;
 
-import static svgger.commands.Interpreter.Direction.*;
+import static svgger.commands.Program.Direction.*;
 
 /** Represents a SVGGER runnable program. */
-public class Interpreter {
+public class Program {
     /** Enum representing directions. */
     public enum Direction {
         UP, RIGHT, DOWN, LEFT
     }
 
-    private PrintStream outputStream;
+    /** Enum representing state of the program. */
+    public enum State {
+        NOT_STARTED_YET, RUNNING, EXCEPTION_OCCURRED, RAN_TO_COMPLETION
+    }
+
     private String programName;
-    private SvggerList<Statement> commands;
+    private Statement command; // In most of the cases, this will be a block of code.
     private SvggerList<Function> functions;
+
     private SvggerList<SvgInstruction> svgInstructions;
 
     private Direction currentDirection;
@@ -31,32 +37,27 @@ public class Interpreter {
     private boolean penDown;
     private SvgStyle style;
 
-    private int width;
-    private int height;
+    private State state;
 
-    /**
-     * Initializes an interpreter.
-     * @param name Name of the program.
-     * @param stream Output stream, commonly its an SVG file.
-     * @param width Width of the canvas.
-     * @param height Height of the canvas.
-     */
-    public Interpreter(String name, PrintStream stream, int width, int height) {
+    public Program(String name, Statement command, SvggerList<Function> functions) {
         svgInstructions = new SvggerList<>();
-        functions = new SvggerList<>();
-        commands = new SvggerList<>();
+        this.functions = new SvggerList<>();
+
+        StandardLibrary.include(this);
+
+        for (Function fn : functions) {
+            if (this.functions.indexOf(fn) != -1) throw new InvalidParameterException("Attempt to redefine function with name " + fn.getName() + ".");
+            this.functions.add(fn);
+        }
+
+        this.command = command;
+        programName = name;
 
         currentDirection = RIGHT;
         currentLocation = new Point(0, 0);
         penDown = false;
         style = new SvgStyle();
-
-        programName = name;
-        outputStream = stream;
-        this.width = width;
-        this.height = height;
-
-        StandardLibrary.include(this);
+        state = State.NOT_STARTED_YET;
     }
 
     /** Returns the style for lines. */
@@ -87,11 +88,6 @@ public class Interpreter {
     /** Decides whether the pen is down. */
     public boolean isPenDown() {
         return penDown;
-    }
-
-    /** Decides whether the pen is up. */
-    public boolean isPenUp() {
-        return !penDown;
     }
 
     /** Makes the pen down. */
@@ -129,19 +125,28 @@ public class Interpreter {
         svgInstructions.add(svg);
     }
 
-    /** Compiles the program into the given printstream. */
-    public static void run(Interpreter interpreter) {
+    /** Compiles the program. */
+    public void run() {
+        if (state != State.NOT_STARTED_YET) return;
+
+        state = State.RUNNING;
+
         HashMap<VariableIdentifier, Integer> varTable = new HashMap<>(); // Program is executed with no parameters, therefore there are no variables.
-        for (Statement cmd : interpreter.commands) {
-            cmd.run(interpreter, varTable);
+
+        try {
+            command.run(this, varTable);
+        } catch (Exception e) {
+            state = State.EXCEPTION_OCCURRED;
+            throw e;
         }
-        interpreter.write();
+
+        state = State.RAN_TO_COMPLETION;
     }
 
-    /** Writes the result into the printstream. */
-    private void write() {
-        for (SvgInstruction instruction : svgInstructions) {
-            outputStream.println(instruction.getSvgInstruction());
+    /** Writes the output into given printstream. */
+    public void write(PrintStream ps) {
+        for (SvgInstruction svg : svgInstructions) {
+            ps.println(svg.getSvgInstruction());
         }
     }
 }

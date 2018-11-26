@@ -1,16 +1,19 @@
 import java_cup.runtime.*;
-import java.util.*;
-import java.io.*;
 import svgger.commands.*;
+import svgger.commands.expressions.*;
+import svgger.commands.operators.*;
+import svgger.commands.statements.*;
+import svgger.util.*;
 
 parser code {:
     public void report_error(String message, Object info) {
-        StringBuilder sb = new StringBuilder("Error: \"" + message);
+        StringBuilder sb = new StringBuilder("Error: " + message);
         if (info instanceof Symbol) {
             Symbol s = ((Symbol)info);
             if (s.left >= 0) {
                 sb.append(" at line " + (s.left + 1));
             }
+            sb.append(", token " + sym.terminalNames[s.sym] + ".");
         }
         System.err.println(sb);
     }
@@ -34,6 +37,7 @@ terminal            OPMINUS;
 terminal            OPMUL;
 terminal            OPDIV;
 terminal            DOT;
+terminal            COMMA;
 terminal            REPEAT;
 terminal Integer    NUMBER;
 terminal String     IDENTIFIER;
@@ -41,13 +45,16 @@ terminal String     IDENTIFIER;
 
 /** Non-terminals. **/
 
-nonterminal Interpreter             program;
+nonterminal Program                 program;
 nonterminal Operator                operator;
 nonterminal Expression              expression;
 nonterminal Statement               statement;
+nonterminal Function                function;
 
-nonterminal SvggerList<Statement>   statementsLoop;
-nonterminal SvggerList<Expression>  fnCallParametersLoop;
+nonterminal SvggerList<Statement>           statementsLoop;
+nonterminal SvggerList<Expression>          fnCallParametersLoop;
+nonterminal SvggerList<VariableIdentifier>  fnDefinitionParametersLoop;
+nonterminal SvggerList<Function>            functionLoop;
 
 /** Precedence. **/
 
@@ -60,7 +67,8 @@ start with program;
 
 /** Rules. **/
 
-program ::= PROGRAM IDENTIFIER:i functionLoop;
+program ::= PROGRAM IDENTIFIER:i statement:s functionLoop:a     {: RESULT = new Program(i, s, a); :}
+          ;
 
 operator ::= OPPLUS         {: RESULT = new OperatorPlus(); :}
            | OPMINUS        {: RESULT = new OperatorMinus(); :}
@@ -74,15 +82,28 @@ expression ::= NUMBER:n                                 {: RESULT = new NumberCo
              ;
 
 statement ::= REPEAT expression:e statement:s                   {: RESULT = new Repeat(e, s); :}
-            | LBRA statementsLoop:a RBRA                        {: RESULT = new Block(a); :} // Block of code.
-            | IDENTIFIER:i DOT                                  {:  :} // Function call with no parameters.
-            | IDENTIFIER:i LPAR fnCallParametersLoop:a RPAR DOT {:  :} // Function call with some parameters.
+            | LBRA statementsLoop:a RBRA                        {: RESULT = new Block(a); :}
+            | IDENTIFIER:i DOT                                  {: RESULT = new FunctionCall(i, new SvggerList<Expression>()); :} // Function call with no parameters.
+            | IDENTIFIER:i LPAR fnCallParametersLoop:a RPAR DOT {: RESULT = new FunctionCall(i, a); :} // Function call with some parameters.
             ;
+
+function ::= FUNCTION IDENTIFIER:i LPAR RPAR statement:s                                {: RESULT = new Function(i, s); :}
+           | FUNCTION IDENTIFIER:i LPAR fnDefinitionParametersLoop:a RPAR statement:s   {: RESULT = new Function(i, a, s); :}
+           ;
 
 statementsLoop ::= statement:s                    {: RESULT = new SvggerList<Statement>(s); :}
                  | statementsLoop:a statement:s   {: RESULT = new SvggerList<Statement>(a, s); :}
                  ;
 
-fnCallParametersLoop ::= expression:e                          {: RESULT = new SvggerList<Expression>(e); :}
-                       | fnCallParametersLoop:a expression:e   {: RESULT = new SvggerList<Expression>(a, e); :}
+fnCallParametersLoop ::= expression:e                                {: RESULT = new SvggerList<Expression>(e); :}
+                       | fnCallParametersLoop:a COMMA expression:e   {: RESULT = new SvggerList<Expression>(a, e); :}
                        ;
+
+
+fnDefinitionParametersLoop ::= IDENTIFIER:i                                      {: RESULT = new SvggerList<VariableIdentifier>(new VariableIdentifier(i)); :}
+                             | fnDefinitionParametersLoop:a COMMA IDENTIFIER:i   {: RESULT = new SvggerList<VariableIdentifier>(a, new VariableIdentifier(i)); :}
+                             ;
+
+functionLoop ::= function:f                 {: RESULT = new SvggerList<Function>(f); :}
+               | functionLoop:a function:f  {: RESULT = new SvggerList<Function>(a, f); :}
+               ;

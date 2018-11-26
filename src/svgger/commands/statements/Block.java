@@ -1,6 +1,6 @@
 package svgger.commands.statements;
 
-import svgger.commands.Interpreter;
+import svgger.commands.Program;
 import svgger.commands.expressions.VariableIdentifier;
 import svgger.util.SvggerList;
 
@@ -15,9 +15,9 @@ public class Block extends Statement {
     }
 
     @Override
-    public void run(Interpreter interpreter, HashMap<VariableIdentifier, Integer> varTable) {
+    public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
         for (Statement s : statements) {
-            s.run(interpreter, varTable);
+            s.run(program, varTable);
         }
     }
 }

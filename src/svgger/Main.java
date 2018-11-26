@@ -1,6 +1,10 @@
 package svgger;
 
+import svgger.commands.Program;
 import svgger.lexer.Lexer;
+import svgger.parser.Parser;
+
+import java.io.*;
 
 public class Main {
 
@@ -8,41 +12,43 @@ public class Main {
      * Runs the compiler and produces SVG output file with the same name.
      * @param args Arguments passed to the compiler.
      */
+    @SuppressWarnings("deprecation")
     public static void main(String[] args) {
         if (args.length != 3) {
             System.out.println("Usage: <input file> <width> <height>");
         }
         else {
             String pathToSourceCode = args[0];
-            int widthOfCanvas, heightOfCanvas;
+            int widthOfCanvas = 800, heightOfCanvas = 800;
 
             try {
                 widthOfCanvas = Integer.parseInt(args[1]);
             }
             catch (NumberFormatException e) {
-                System.out.println("Invalid number: " + args[1]);
+                System.err.println("Invalid number: " + args[1]);
             }
 
             try {
                 heightOfCanvas = Integer.parseInt(args[2]);
             }
             catch (NumberFormatException e) {
-                System.out.println("Invalid number: " + args[2]);
+                System.err.println("Invalid number: " + args[2]);
             }
 
-
-            Lexer scanner = null;
             try {
-                java.io.FileInputStream stream = new java.io.FileInputStream(args[0]);
-                java.io.Reader reader = new java.io.InputStreamReader(stream);
-                scanner = new Lexer(reader);
+
+                Parser p = new Parser(new Lexer(new FileReader(pathToSourceCode)));
+
+                Program program = (Program)p.parse().value;
+
+                new Interpreter(new PrintStream(new File(pathToSourceCode.split("\\.")[0] + ".svg")), program, widthOfCanvas, heightOfCanvas).run();
+
+            } catch (FileNotFoundException e) {
+                System.err.println("File not found.");
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
-            catch (java.io.FileNotFoundException e) {
-                System.out.println("File not found: " + args[0]);
-            }
-            catch (java.io.IOException e) {
-                System.out.println("IO error scanning file :" + args[0]);
-            }
+
         }
     }
 }

@@ -1,7 +1,7 @@
 package svgger.stdlib;
 
 import svgger.commands.Function;
-import svgger.commands.Interpreter;
+import svgger.commands.Program;
 import svgger.commands.expressions.VariableIdentifier;
 import svgger.commands.statements.Statement;
 
@@ -11,19 +11,19 @@ import java.util.HashMap;
 public class TurnLeft extends Function {
     private class HelperStatement extends Statement {
         @Override
-        public void run(Interpreter interpreter, HashMap<VariableIdentifier, Integer> varTable) {
-            switch (interpreter.getCurrentDirection()) {
+        public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+            switch (program.getCurrentDirection()) {
                 case UP:
-                    interpreter.setDirection(Interpreter.Direction.LEFT);
+                    program.setDirection(Program.Direction.LEFT);
                     break;
                 case RIGHT:
-                    interpreter.setDirection(Interpreter.Direction.UP);
+                    program.setDirection(Program.Direction.UP);
                     break;
                 case DOWN:
-                    interpreter.setDirection(Interpreter.Direction.RIGHT);
+                    program.setDirection(Program.Direction.RIGHT);
                     break;
                 case LEFT:
-                    interpreter.setDirection(Interpreter.Direction.DOWN);
+                    program.setDirection(Program.Direction.DOWN);
                     break;
             }
         }

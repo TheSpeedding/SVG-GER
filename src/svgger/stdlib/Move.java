@@ -1,7 +1,7 @@
 package svgger.stdlib;
 
 import svgger.commands.Function;
-import svgger.commands.Interpreter;
+import svgger.commands.Program;
 import svgger.commands.expressions.VariableIdentifier;
 import svgger.commands.statements.Statement;
 import svgger.commands.svg.SvgLine;
@@ -14,31 +14,31 @@ import java.util.HashMap;
 public class Move extends Function {
     private class HelperStatement extends Statement {
         @Override
-        public void run(Interpreter interpreter, HashMap<VariableIdentifier, Integer> varTable) {
-            var currentDirection = interpreter.getCurrentDirection();
-            var originLocation = interpreter.getCurrentLocation();
+        public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+            var currentDirection = program.getCurrentDirection();
+            var originLocation = program.getCurrentLocation();
 
             var distance = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
 
             switch (currentDirection) {
                 case UP:
-                    interpreter.setLocation(new Point(originLocation.x, originLocation.y - distance));
+                    program.setLocation(new Point(originLocation.x, originLocation.y - distance));
                     break;
                 case RIGHT:
-                    interpreter.setLocation(new Point(originLocation.x + distance, originLocation.y));
+                    program.setLocation(new Point(originLocation.x + distance, originLocation.y));
                     break;
                 case DOWN:
-                    interpreter.setLocation(new Point(originLocation.x, originLocation.y + distance));
+                    program.setLocation(new Point(originLocation.x, originLocation.y + distance));
                     break;
                 case LEFT:
-                    interpreter.setLocation(new Point(originLocation.x - distance, originLocation.y));
+                    program.setLocation(new Point(originLocation.x - distance, originLocation.y));
                     break;
             }
 
-            var currentLocation = interpreter.getCurrentLocation();
+            var currentLocation = program.getCurrentLocation();
 
-            if (interpreter.isPenDown()) {
-                interpreter.addSvgInstruction(new SvgLine(originLocation, currentLocation, interpreter.getStyle()));
+            if (program.isPenDown()) {
+                program.addSvgInstruction(new SvgLine(originLocation, currentLocation, program.getStyle()));
             }
         }
     }

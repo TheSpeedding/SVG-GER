@@ -1,7 +1,7 @@
 package svgger.stdlib;
 
 import svgger.commands.Function;
-import svgger.commands.Interpreter;
+import svgger.commands.Program;
 import svgger.commands.expressions.VariableIdentifier;
 import svgger.commands.statements.Statement;
 
@@ -11,8 +11,8 @@ import java.util.HashMap;
 public class PenDown extends Function {
     private class HelperStatement extends Statement {
         @Override
-        public void run(Interpreter interpreter, HashMap<VariableIdentifier, Integer> varTable) {
-            interpreter.setPenDown();
+        public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+            program.setPenDown();
         }
     }
 
