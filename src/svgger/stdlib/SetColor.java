@@ -12,12 +12,14 @@ import java.util.HashMap;
 public class SetColor extends Function {
     private class HelperStatement extends Statement {
         @Override
-        public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+        public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
             var r = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
             var g = getParameterKeys().get(1).getValue(varTable); // This variable is given by the variable in the constructor below.
             var b = getParameterKeys().get(2).getValue(varTable); // This variable is given by the variable in the constructor below.
 
             program.getStyle().setColor(r, g, b);
+
+            return true;
         }
     }
 

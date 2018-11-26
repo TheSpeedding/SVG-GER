@@ -46,7 +46,7 @@ public class Main {
             } catch (FileNotFoundException e) {
                 System.err.println("File not found.");
             } catch (Exception e) {
-                System.err.println(e.getMessage());
+                System.err.println("Error: " + e.getMessage());
             }
 
         }

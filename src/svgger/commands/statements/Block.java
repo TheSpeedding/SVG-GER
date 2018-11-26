@@ -15,9 +15,11 @@ public class Block extends Statement {
     }
 
     @Override
-    public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+    public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
         for (Statement s : statements) {
-            s.run(program, varTable);
+            if (!s.run(program, varTable))
+                return false;
         }
+        return true;
     }
 }

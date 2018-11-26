@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class TurnLeft extends Function {
     private class HelperStatement extends Statement {
         @Override
-        public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+        public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
             switch (program.getCurrentDirection()) {
                 case UP:
                     program.setDirection(Program.Direction.LEFT);
@@ -26,6 +26,8 @@ public class TurnLeft extends Function {
                     program.setDirection(Program.Direction.DOWN);
                     break;
             }
+
+            return true;
         }
     }
 

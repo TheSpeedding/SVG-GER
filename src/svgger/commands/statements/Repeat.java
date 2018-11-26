@@ -18,10 +18,12 @@ public class Repeat extends Statement {
     }
 
     @Override
-    public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+    public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
         int val = expr.getValue(varTable);
         for (int i = 0; i < val; ++i) {
-            statement.run(program, varTable);
+            if (!statement.run(program, varTable))
+                return false;
         }
+        return true;
     }
 }

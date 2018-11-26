@@ -13,5 +13,6 @@ public class StandardLibrary {
         program.addFunction(new Move());
         program.addFunction(new SetColor());
         program.addFunction(new SetWidth());
+        program.addFunction(new ReturnIfZero());
     }
 }

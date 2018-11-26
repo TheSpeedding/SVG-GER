@@ -50,7 +50,7 @@ public class Function {
         this.command = command;
     }
 
-    public void run(Program program, SvggerList<Expression> parameterValues, HashMap<VariableIdentifier, Integer> previousContext) {
+    public boolean run(Program program, SvggerList<Expression> parameterValues, HashMap<VariableIdentifier, Integer> previousContext) {
         if (parameterValues.size() != parameterKeys.size())
             throw new InvalidParameterException("Number of parameters at the function call " + name + " does not match.");
 
@@ -59,7 +59,7 @@ public class Function {
             varTable.put(parameterKeys.get(i), parameterValues.get(i).getValue(previousContext));
         }
 
-        command.run(program, varTable);
+        return command.run(program, varTable);
     }
 
     @Override

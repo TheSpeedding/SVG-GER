@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Move extends Function {
     private class HelperStatement extends Statement {
         @Override
-        public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+        public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
             var currentDirection = program.getCurrentDirection();
             var originLocation = program.getCurrentLocation();
 
@@ -40,6 +40,8 @@ public class Move extends Function {
             if (program.isPenDown()) {
                 program.addSvgInstruction(new SvgLine(originLocation, currentLocation, program.getStyle()));
             }
+
+            return true;
         }
     }
 

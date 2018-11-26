@@ -10,6 +10,7 @@ public abstract class Statement {
     /**
      * Performs an action associated with the statement.
      * @param program Program that is the statement associated with.
+     * @return True, if execution of command was succesful. Otherwise false.
      */
-    public abstract void run(Program program, HashMap<VariableIdentifier, Integer> varTable);
+    public abstract boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable);
 }

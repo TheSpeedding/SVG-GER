@@ -11,8 +11,9 @@ import java.util.HashMap;
 public class PenDown extends Function {
     private class HelperStatement extends Statement {
         @Override
-        public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+        public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
             program.setPenDown();
+            return true;
         }
     }
 

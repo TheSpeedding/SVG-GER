@@ -20,9 +20,9 @@ public class FunctionCall extends Statement {
     }
 
     @Override
-    public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+    public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
         Function f = program.getFunction(name);
         if (f == null) throw new InvalidParameterException("Function with name " + name + " does not exist in current context.");
-        f.run(program, params, varTable);
+        return f.run(program, params, varTable);
     }
 }

@@ -12,10 +12,12 @@ import java.util.HashMap;
 public class SetWidth extends Function {
     private class HelperStatement extends Statement {
         @Override
-        public void run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
+        public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
             var width = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
 
             program.getStyle().setWidth(width);
+
+            return true;
         }
     }
 
