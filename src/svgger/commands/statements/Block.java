@@ -10,6 +10,10 @@ import java.util.HashMap;
 public class Block extends Statement {
     private SvggerList<Statement> statements;
 
+    /**
+     * Initializes an object.
+     * @param statements Statements in this block.
+     */
     public Block(SvggerList<Statement> statements) {
         this.statements = statements;
     }
@@ -21,5 +25,16 @@ public class Block extends Statement {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{" + System.lineSeparator());
+        for (Statement s : statements) {
+            sb.append(s.toString() + System.lineSeparator());
+        }
+        sb.append("}" + System.lineSeparator());
+        return sb.toString();
     }
 }

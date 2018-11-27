@@ -6,6 +6,10 @@ import java.util.HashMap;
 public class NumberConstant extends Expression {
     private int value;
 
+    /**
+     * Initiaizes an object.
+     * @param value Value of the constant.
+     */
     public NumberConstant(int value) {
         this.value = value;
     }

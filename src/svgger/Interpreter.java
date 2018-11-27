@@ -11,6 +11,13 @@ public class Interpreter {
     private int width;
     private int height;
 
+    /**
+     * Initializes an object.
+     * @param ps Printstream.
+     * @param program Program to interpret.
+     * @param width Width of canvas.
+     * @param height Height of canvas.
+     */
     public Interpreter(PrintStream ps, Program program, int width, int height) {
         this.ps = ps;
         this.program = program;

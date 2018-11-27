@@ -142,3 +142,6 @@ REPEAT = [rR][eE][pP][eE][aA][tT]
                             return createSymbol(sym.EOF);
                         }
 }
+    [^]                 {
+                            throw new Error("Unrecognized token " + yytext() + ".");
+                        }

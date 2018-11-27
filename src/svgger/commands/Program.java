@@ -39,6 +39,12 @@ public class Program {
 
     private State state;
 
+    /**
+     * Initializes an object.
+     * @param name Name of the program.
+     * @param command Body of the program.
+     * @param functions Functions defined in the program.
+     */
     public Program(String name, Statement command, SvggerList<Function> functions) {
         svgInstructions = new SvggerList<>();
         this.functions = new SvggerList<>();
@@ -60,32 +66,45 @@ public class Program {
         state = State.NOT_STARTED_YET;
     }
 
-    /** Returns the style for lines. */
+    /**
+     * Returns the style for lines.
+     * @return Style for the lines.
+     */
     public SvgStyle getStyle() {
         return style;
     }
 
-    /** Returns current direction. */
+    /** Returns current direction.
+     * @return Current direction.
+     */
     public Direction getCurrentDirection() {
         return currentDirection;
     }
 
-    /** Sets the new direction. */
+    /** Sets the new direction
+     * @param direction New direction.
+     */
     public void setDirection(Direction direction) {
         currentDirection = direction;
     }
 
-    /** Returns current location. */
+    /** Returns current location.
+     * @return Current location.
+     */
     public Point getCurrentLocation() {
         return currentLocation;
     }
 
-    /** Sets the new location. */
+    /** Sets the new location.
+     * @param location New location.
+     */
     public void setLocation(Point location) {
         currentLocation = location;
     }
 
-    /** Decides whether the pen is down. */
+    /** Decides whether the pen is down.
+     * @return True if pen down. False if pen up.
+     */
     public boolean isPenDown() {
         return penDown;
     }
@@ -100,7 +119,9 @@ public class Program {
         penDown = false;
     }
 
-    /** Returns name of the program associated with this interpreter. */
+    /** Returns name of the program associated with this interpreter.
+     * @return Name of the program.
+     */
     public String getProgramName() {
         return programName;
     }
@@ -110,7 +131,10 @@ public class Program {
         functions.add(fn);
     }
 
-    /** Returns the function by name. */
+    /** Returns the function by name.
+     * @param name Name of the function.
+     * @return Corresponding function. Null if does not exist.
+     */
     public Function getFunction(String name) {
         for (Function f : functions) {
             if (f.getName().equals(name)) {
@@ -120,7 +144,9 @@ public class Program {
         return null;
     }
 
-    /** Adds SVG instruction to the program. */
+    /** Adds SVG instruction to the program.
+     * @param svg SVG instruction.
+     */
     public void addSvgInstruction(SvgInstruction svg) {
         svgInstructions.add(svg);
     }
@@ -143,10 +169,21 @@ public class Program {
         state = State.RAN_TO_COMPLETION;
     }
 
-    /** Writes the output into given printstream. */
+    /** Writes the output into given printstream.
+     * @param ps Printstream.
+     */
     public void write(PrintStream ps) {
         for (SvgInstruction svg : svgInstructions) {
             ps.println(svg.getSvgInstruction());
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Function fn : functions) {
+            sb.append(fn.toString());
+        }
+        return "PROGRAM " + programName + " " + command.toString() + sb.toString();
     }
 }

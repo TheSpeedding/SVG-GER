@@ -26,4 +26,9 @@ public class Repeat extends Statement {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "REPEAT " + expr.toString() + " " + statement.toString();
+    }
 }

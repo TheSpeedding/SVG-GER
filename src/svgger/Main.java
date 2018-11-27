@@ -17,6 +17,7 @@ public class Main {
         if (args.length != 3) {
             System.out.println("Usage: <input file> <width> <height>");
         }
+
         else {
             String pathToSourceCode = args[0];
             int widthOfCanvas = 800, heightOfCanvas = 800;
@@ -36,20 +37,17 @@ public class Main {
             }
 
             try {
-
                 Parser p = new Parser(new Lexer(new FileReader(pathToSourceCode)));
 
                 Program program = (Program)p.parse().value;
 
                 new Interpreter(new PrintStream(new File(pathToSourceCode.split("\\.")[0] + ".svg")), program, widthOfCanvas, heightOfCanvas).run();
-
             } catch (FileNotFoundException e) {
                 System.err.println("File not found.");
-            } catch (Exception e) {
-                System.err.println("Error: " + e.getMessage());
-            }
-            catch (StackOverflowError e) {
+            } catch (StackOverflowError e) {
                 System.err.println("Error: Stack overflow. Check for stop condition in your recursive function.");
+            } catch (Exception | Error e) {
+                System.err.println("Error: " + e.getMessage());
             }
 
         }

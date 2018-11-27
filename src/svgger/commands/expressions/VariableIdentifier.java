@@ -11,11 +11,19 @@ public class VariableIdentifier extends Expression {
         return identifier;
     }
 
-    /** Returns value of the variable. */
+    /**
+     * Returns value of the variable.
+     * @param varTable Reference to the table with variables in given context (program or function).
+     * @return Value of the variable in given context, i.e. in particular function.
+     */
     public int getValue(HashMap<VariableIdentifier, Integer> varTable) {
         return varTable.get(this);
     }
 
+    /**
+     * Initializes an object.
+     * @param identifier Identifier of the variable.
+     */
     public VariableIdentifier(String identifier) {
         this.identifier = identifier;
     }

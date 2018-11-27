@@ -2,12 +2,12 @@ package svgger.util;
 
 import java.util.ArrayList;
 
-/** Copy of array list with new constructor suiting SVG-GER needs. */
+/** Copy of array list with new constructor suiting SVG-GER needs.
+ * A grammar uses left-recursion to parse parameters, so something like this is needed.
+ */
 public class SvggerList<T> extends ArrayList<T> {
     /** Initializes an empty list. */
-    public SvggerList() {
-
-    }
+    public SvggerList() { }
 
     /**
      * Initializes a list with given item.
