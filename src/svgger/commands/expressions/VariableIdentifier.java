@@ -6,7 +6,9 @@ import java.util.HashMap;
 public class VariableIdentifier extends Expression {
     private String identifier;
 
-    /** Returns the identifier. */
+    /** Returns the identifier.
+     * @return Name of the identifier.
+     */
     public String getIdentifier() {
         return identifier;
     }

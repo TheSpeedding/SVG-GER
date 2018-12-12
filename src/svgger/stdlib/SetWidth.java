@@ -13,7 +13,7 @@ public class SetWidth extends Function {
     private class HelperStatement extends Statement {
         @Override
         public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
-            var width = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
+            int width = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
 
             program.getStyle().setWidth(width);
 

@@ -123,8 +123,8 @@ REPEAT = [rR][eE][pP][eE][aA][tT]
     \n                  {
                             yybegin(MAIN);
                         }
-    .                   {
-                            // Go out with whitespaces.
+    .|{WHITESPACE}      {
+                            // Go out with comments.
                         }
     <<EOF>>             {
                             return createSymbol(sym.EOF);
@@ -135,8 +135,8 @@ REPEAT = [rR][eE][pP][eE][aA][tT]
     \*\/                {
                             yybegin(MAIN);
                         }
-    .                   {
-                            // Go out with whitespaces.
+    .|{WHITESPACE}      {
+                            // Go out with comments.
                         }
     <<EOF>>             {
                             return createSymbol(sym.EOF);

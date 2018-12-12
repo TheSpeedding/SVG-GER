@@ -126,7 +126,9 @@ public class Program {
         return programName;
     }
 
-    /** Adds function to the program. */
+    /** Adds function to the program.
+     * @param fn Function to add.
+     */
     public void addFunction(Function fn) {
         functions.add(fn);
     }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="SVGGER" default="dist" basedir=".">
+
+  <property name="src" location="src"/>
+  <property name="lib" location="lib"/>
+  <property name="build" location="build"/>
+  <property name="dist" location="dist"/>
+  <property name="doc" location="doc"/>
+
+  <taskdef name="jflex" classname="jflex.anttask.JFlexTask" classpath="${lib}/jflex-full-1.7.0.jar"/>
+  <taskdef name="cup" classname="java_cup.anttask.CUPTask" classpath="${lib}/java-cup-11b.jar"/>
+
+  <target name="init">
+    <echo>Please note that CUP Ant task is broken at the moment (and the bug was reported to developers). 
+Therefore, using "clean" target may broke the application (runtime error because of bad cast in the parser).
+If exception occurs, it is essential to create a parser "by hand". Executing the command below and copying files "Parser.java" and "sym.java"
+to the folder "src/svgger/parser" should do the trick.
+
+java -jar ./lib/java-cup-11b.jar -package "svgger.parser" -interface -parser Parser ./src/svgger/parser/Parser.cup</echo>
+    <tstamp/>
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init" description="Compile the source.">
+    <jflex verbose="on" file="${src}/svgger/lexer/Lexer.flex" destdir="${src}"/> 
+    <cup srcfile="${src}/svgger/parser/Parser.cup" destdir="${src}/svgger/parser" package="svgger.parser" interface="true" parser="Parser"/>
+    <javac source="8" target="8" includeantruntime="true" srcdir="${src}" destdir="${build}" classpath="${lib}/java-cup-11b-runtime.jar"/>
+  </target>
+
+  <target name="dist" depends="compile" description="Generate the distribution.">
+    <mkdir dir="${dist}"/>
+    <jar jarfile="${dist}/SVGGER-${DSTAMP}.jar" basedir="${build}">    
+      <manifest>
+        <attribute name="Main-Class" value="svgger.Main"/>
+      </manifest>
+      <zipgroupfileset dir="${lib}" includes="java-cup-11b-runtime.jar" />
+    </jar>
+  </target>
+
+  <target name="doc" description="Generates javadoc.">
+    <javadoc packagenames="svgger.*"
+             sourcepath="src"
+             excludepackagenames="svgger.lexer.*, svgger.parser.*"
+             defaultexcludes="yes"
+             destdir="${doc}"
+             author="true"
+             version="true"
+             use="true"
+             classpath="${lib}/java-cup-11b-runtime.jar"
+             overview="./Overview.html"
+             windowtitle="SVG-GER Compiler">
+      <doctitle><![CDATA[<h1>SVG-GER Compiler</h1>]]></doctitle>
+      <link href="https://docs.oracle.com/javase/8/docs/api/"/>
+    </javadoc>
+  </target>
+  
+  <target name="clean" description="Clean up.">
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+    <delete dir="${doc}"/>
+    <delete file="${src}/svgger/parser/Parser.java" />
+    <delete file="${src}/svgger/parser/sym.java" />
+    <delete file="${src}/svgger/lexer/Lexer.java" />
+  </target>
+
+</project>

@@ -15,10 +15,10 @@ public class Move extends Function {
     private class HelperStatement extends Statement {
         @Override
         public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
-            var currentDirection = program.getCurrentDirection();
-            var originLocation = program.getCurrentLocation();
+            Program.Direction currentDirection = program.getCurrentDirection();
+            Point originLocation = program.getCurrentLocation();
 
-            var distance = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
+            int distance = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
 
             switch (currentDirection) {
                 case UP:
@@ -35,7 +35,7 @@ public class Move extends Function {
                     break;
             }
 
-            var currentLocation = program.getCurrentLocation();
+            Point currentLocation = program.getCurrentLocation();
 
             if (program.isPenDown()) {
                 program.addSvgInstruction(new SvgLine(originLocation, currentLocation, program.getStyle()));

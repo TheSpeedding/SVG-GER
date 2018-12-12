@@ -15,15 +15,14 @@ public class GoTo extends Function {
     private class HelperStatement extends Statement {
         @Override
         public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
-            var currentDirection = program.getCurrentDirection();
-            var originLocation = program.getCurrentLocation();
+            Point originLocation = program.getCurrentLocation();
 
-            var x = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
-            var y = getParameterKeys().get(1).getValue(varTable); // This variable is given by the variable in the constructor below.
+            int x = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
+            int y = getParameterKeys().get(1).getValue(varTable); // This variable is given by the variable in the constructor below.
 
             program.setLocation(new Point(x, y));
 
-            var currentLocation = program.getCurrentLocation();
+            Point currentLocation = program.getCurrentLocation();
 
             if (program.isPenDown()) {
                 program.addSvgInstruction(new SvgLine(originLocation, currentLocation, program.getStyle()));
@@ -34,7 +33,7 @@ public class GoTo extends Function {
     }
 
     public GoTo() {
-        super("GO_TO", new SvggerList<>(new SvggerList<>(new VariableIdentifier("x")), new VariableIdentifier("y")));
+        super("GO_TO", new SvggerList<>(new VariableIdentifier("x"), new VariableIdentifier("y")));
         addCommand(new HelperStatement());
     }
 }

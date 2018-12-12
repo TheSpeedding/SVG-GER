@@ -13,9 +13,9 @@ public class SetColor extends Function {
     private class HelperStatement extends Statement {
         @Override
         public boolean run(Program program, HashMap<VariableIdentifier, Integer> varTable) {
-            var r = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
-            var g = getParameterKeys().get(1).getValue(varTable); // This variable is given by the variable in the constructor below.
-            var b = getParameterKeys().get(2).getValue(varTable); // This variable is given by the variable in the constructor below.
+            int r = getParameterKeys().get(0).getValue(varTable); // This variable is given by the variable in the constructor below.
+            int g = getParameterKeys().get(1).getValue(varTable); // This variable is given by the variable in the constructor below.
+            int b = getParameterKeys().get(2).getValue(varTable); // This variable is given by the variable in the constructor below.
 
             program.getStyle().setColor(r, g, b);
 
@@ -24,7 +24,7 @@ public class SetColor extends Function {
     }
 
     public SetColor() {
-        super("SET_COLOR", new SvggerList<>(new SvggerList<>(new SvggerList<>(new VariableIdentifier("r")), new VariableIdentifier("g")), new VariableIdentifier("b")));
+        super("SET_COLOR", new SvggerList<>(new VariableIdentifier("r"), new VariableIdentifier("g"), new VariableIdentifier("b")));
         addCommand(new HelperStatement());
     }
 }

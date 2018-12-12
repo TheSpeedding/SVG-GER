@@ -7,17 +7,27 @@ PROGRAM Rectangles {
     TURN_LEFT.
   }  
 }
+
+/** Function to draw multiple rectangles.
+ * @n Number of rectangles to draw.
+ */
 FUNCTION DRAW_RECTANGLES(n) {  
   REPEAT n {
     DRAW_RECTANGLE(50).
     MOVE(75).
   }    
+  
+  // When the drawing is done, move the pen to the default position.  
   TURN_LEFT.
   TURN_LEFT.
   MOVE(75*n).
   TURN_LEFT.
   TURN_LEFT.
 }
+
+/** Function to draw a rectangle
+ * @x Length of a side.
+ */
 FUNCTION DRAW_RECTANGLE(x) {
   SET_RANDOM_COLOR.
   PEN_DOWN.
